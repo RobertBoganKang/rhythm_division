@@ -11,16 +11,16 @@ The method will consider several points:
 ### Notice
 The division factor (denominators) can only contains one logic division line. For example:
 
-In one group of division factors: `{x[0],x[1],...,x[i]}`, we will make sure all `x[i]/x[i-1]` are prime numbers. If meet large prime number, try to divided to break it down.
+In one group of division factors: `{x[0],x[1],...,x[i]}`, we will make sure all `x[i]/x[i-1]` are combination of prime numbers (not fraction). If meet large prime number, try to divided to break it down.
 ## Deficiency
 This algorithm is currently doing mannuly. Automatic algrithm seems too difficult to search now.
 ## Demos
-### demo (middle east rhythm)
+### middle east rhythm
 `{2, 3, 1, 2, 4, 2, 1, 1}`
-![Alt Text](https://github.com/RobertBoganKang/rhythm_division/blob/master/demo/demo.png)
-### demo2 (substitute)
+![Alt Text](https://github.com/RobertBoganKang/rhythm_division/blob/master/demo/middle-east.png)
+### substitute
 `{3, {2, 1}, {1, 1, 1}, 3}`
-![Alt Text](https://github.com/RobertBoganKang/rhythm_division/blob/master/demo/demo2.png)
-### division (division)
+![Alt Text](https://github.com/RobertBoganKang/rhythm_division/blob/master/demo/substitute.png)
+### division
 `{{2, 1}, {2, 2}}`
 ![Alt Text](https://github.com/RobertBoganKang/rhythm_division/blob/master/demo/division.png)
