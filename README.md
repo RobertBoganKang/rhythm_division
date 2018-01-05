@@ -19,7 +19,7 @@ This algorithm is currently doing mannuly. Automatic algrithm seems too difficul
 `{2, 2, 2, 2, 4, 2, 1, 1}`
 ![Alt Text](https://github.com/RobertBoganKang/rhythm_division/blob/master/demo/middle-east.png)
 ### middle-east rhythm (variation)
-`{2, 1, 1, 1, 1, 2, 1, 1, 1, 1, 2, 1, 1}`
+`{{2, 1, 1, 1, 1, 2}, {1, 1, 1, 1, 2, 1, 1}}`
 ![Alt Text](https://github.com/RobertBoganKang/rhythm_division/blob/master/demo/middle-east2.png)
 ### substitute
 `{3, {2, 1}, {1, 1, 1}, 3}`
