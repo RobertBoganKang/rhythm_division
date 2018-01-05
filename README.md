@@ -12,8 +12,13 @@ The method will consider several points:
 The division factor (denominators) can only contains one logic division line. For example:
 
 In one group of division factors: `{x[0],x[1],...,x[i]}`, we will make sure all `x[i]/x[i-1]` are multiplications of prime numbers (not fraction: human can only understand rhythm for one logic line at one time). If meet large prime number, try to divided to break it down.
-## Deficiency
+### Deficiency
 This algorithm is currently doing mannuly. Automatic algrithm seems too difficult to search now.
+## Theme
+### Color
+Since this graphics looks like crops or corns, I use brown as ground, green as stems and leaves, orange as fruits or seeds, yellow as silks or fibers, red as bugs. 
+
+When the block contains error of division stream-line, the error object will turn red as warning.
 ## Demos
 ### middle-east rhythm
 `{2, 2, 2, 2, 4, 2, 1, 1}`

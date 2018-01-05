@@ -1,5 +1,7 @@
 (* ::Package:: *)
 
+(*data is an multi-dimensional array with free form, each object should be an integer or fraction
+This algorithm shows the logic of rhythm including the possible nearest relations*)
 rhythmTree[data_]:=Module[{bhead,bQ,branchcolor,branches,branchtextcolor,secondarybranchcolor,containbranch,containbranchQ,denarr,denominators,duration,fathernodeposition,framecolor,graphics,groundcolor,head,i,ihead,index,indexheadoflist,innerindexoflist,iQ,length,linelength,margin,nearestposition,node,numerator,olddenarr,position,Q,recleft,recright,rectlength,simplify,sortlist,subposition,temp,text,textsize,tickbase,tickcolor,tickposition,tickpositiondict,ticks,ticktextsize,tpos,truelength,xbase,xpos,xpos2,ypos,ypos2,yposition,errorcolor,streamQ,errorQ,errcolor,secondarybranches,secondaryfathernodeposition,calculatecoordinate},
 (*data manipulation*)
 duration=Flatten[data];
@@ -17,7 +19,7 @@ framecolor=Gray;
 tickcolor=LightGray;
 groundcolor=Darker[Brown,.2];
 branchcolor=Darker[Green,.6];
-secondarybranchcolor=LightGreen;
+secondarybranchcolor=LightYellow;
 branchtextcolor=Orange;
 errorcolor=Darker[Red,.3];
 linelength=3;
@@ -164,3 +166,9 @@ Framed@Show[Graphics[Flatten[{graphics,secondarybranches,branches,text}]],ImageS
 a. use it outside the bowPath[] function;
 b. results location: the same directory of notebook you are using and you can find folder 'exports' contains the files of results*)
 export[x_]:=Module[{},Quiet[CreateDirectory[NotebookDirectory[]<>"exports"]];Column@{Export[NotebookDirectory[]<>"exports/"<>ToString[Round[AbsoluteTime[]*100]]<>".png",x],Export[NotebookDirectory[]<>"exports/"<>ToString[Round[AbsoluteTime[]*100]]<>".pdf",x]}];
+
+
+(*plot the logic line of division*)
+streamTest[x_]:=Module[{den,denrel},den=Sort[x];
+denrel=DeleteCases[Union[Flatten[Table[If[GCD[den[[i]],den[[j]]]==den[[i]]&&PrimeQ[den[[j]]/den[[i]]],{den[[i]]->den[[j]],den[[j]]/den[[i]]}],{i,Length[den]},{j,i+1,Length[den]}],1]],Null];
+LayeredGraphPlot[denrel,VertexLabeling->True,DirectedEdges->True,ImageSize->Large]]
