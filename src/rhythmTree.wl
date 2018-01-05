@@ -1,6 +1,6 @@
 (* ::Package:: *)
 
-rhythmTree[data_]:=Module[{bhead,bQ,branchcolor,branches,branchtextcolor,containbranch,containbranchQ,denarr,denominators,duration,fathernodeposition,framecolor,graphics,groundcolor,head,i,ihead,index,indexheadoflist,innerindexoflist,iQ,length,linelength,margin,nearestposition,node,numerator,olddenarr,position,Q,recleft,recright,rectlength,simplify,sortlist,subposition,temp,text,textsize,tickbase,tickcolor,tickposition,tickpositiondict,ticks,ticktextsize,tpos,truelength,xbase,xpos,xpos2,ypos,ypos2,yposition,errorcolor,streamQ,errorQ,errcolor,secondarybranches,secondaryfathernodeposition,calculatecoordinate},
+rhythmTree[data_]:=Module[{bhead,bQ,branchcolor,branches,branchtextcolor,secondarybranchcolor,containbranch,containbranchQ,denarr,denominators,duration,fathernodeposition,framecolor,graphics,groundcolor,head,i,ihead,index,indexheadoflist,innerindexoflist,iQ,length,linelength,margin,nearestposition,node,numerator,olddenarr,position,Q,recleft,recright,rectlength,simplify,sortlist,subposition,temp,text,textsize,tickbase,tickcolor,tickposition,tickpositiondict,ticks,ticktextsize,tpos,truelength,xbase,xpos,xpos2,ypos,ypos2,yposition,errorcolor,streamQ,errorQ,errcolor,secondarybranches,secondaryfathernodeposition,calculatecoordinate},
 (*data manipulation*)
 duration=Flatten[data];
 tpos[x_]:=Accumulate[Prepend[x,0]]/Total[x];
@@ -17,6 +17,7 @@ framecolor=Gray;
 tickcolor=LightGray;
 groundcolor=Darker[Brown,.2];
 branchcolor=Darker[Green,.6];
+secondarybranchcolor=LightGreen;
 branchtextcolor=Orange;
 errorcolor=Darker[Red,.3];
 linelength=3;
@@ -99,7 +100,7 @@ index=indexheadoflist+ihead+innerindexoflist;
 yposition[[index+1]]=((denominators[[i]])/.tickpositiondict);
 (*track denominator array for the loop, the old is for last loop situation*)
 olddenarr=denarr;
-denarr[[index+1]]=denominators[[i]]/rectlength;
+If[denominators[[i]]/rectlength==1000,denarr[[index+1]]=denominators[[i]]/rectlength];
 If[ListQ[node],
 AppendTo[Q,node];
 AppendTo[iQ,ihead+indexheadoflist+innerindexoflist];
@@ -139,7 +140,7 @@ True,Denominator[subposition[[fathernodeposition[[j]]]]]/.tickpositiondict];
 xpos2=position[[index+1]]+xbase;
 ypos2=(denominators[[i]])/.tickpositiondict;);
 (*create hidden branches*)
-Do[AppendTo[secondarybranches,{Thickness[0.02*rectlength*1.1^-Denominator[position[[index+1]]]],If[errorQ,Lighter[Red,.8],GrayLevel[.9]]}];
+Do[AppendTo[secondarybranches,{Thickness[0.02*rectlength*1.1^-Denominator[position[[index+1]]]],If[errorQ,Lighter[Red,.8],secondarybranchcolor]}];
 calculatecoordinate[secondaryfathernodeposition,j];
 If[(*delete ground leaf*)ypos!=ypos2||(ypos!=tickbase&&ypos==ypos2),
 AppendTo[secondarybranches,Line[{{xpos,ypos},{xpos2,ypos2}}]];
