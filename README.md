@@ -1,8 +1,8 @@
 # Rhythm Division
 ## Introduction
-Rhythm division is part of my research on music rhythm. This graph could show the inner logic of rhythm, which is very important concept for music rhythm structural research in the future.
+Rhythm division is part of my research on music rhythm. This type of graph could show the inner logic of rhythm, which lays the fundation for the research of music structural research in the future.
 ## Method
-Music rhythm has hierarchical structure, which help human understand the inner logic of music.
+Music rhythm has hierarchical structure. This structure shows the logic that human understand the rhythm of music.
 
 The method will consider several points:
 * The hierarchical structure based on prime numbers.
@@ -21,6 +21,6 @@ This algorithm is currently doing mannuly. Automatic algrithm seems too difficul
 ### demo2
 `{3, {2, 1}, {1, 1, 1}, 3}`
 ![Alt Text](https://github.com/RobertBoganKang/rhythm_division/blob/master/demo/demo2.png)
-### demo2
+### division
 `{{2, 1}, {2, 2}}`
 ![Alt Text](https://github.com/RobertBoganKang/rhythm_division/blob/master/demo/division.png)
