@@ -116,16 +116,16 @@ Denominator[position[[ihead+1]]]>Denominator[position[[ihead+1+sortlist[[2,1]]-s
 True,{sortlist[[1,1]],sortlist[[2,1]]}]]
 ];
 ];
-Do[AppendTo[branches,{branchcolor,Thickness[0.02*rectlength*1.1^-Denominator[position[[index+1]]]],{}
-,xpos=subposition[[fathernodeposition[[j]]]]*rectlength+xbase+position[[ihead+1]];
+Do[AppendTo[branches,{branchcolor,Thickness[0.02*rectlength*1.1^-Denominator[position[[index+1]]]]}];
+xpos=subposition[[fathernodeposition[[j]]]]*rectlength+xbase+position[[ihead+1]];
 ypos=Which[subposition[[fathernodeposition[[j]]]]==0||subposition[[fathernodeposition[[j]]]]==1&&xpos-xbase==1,
 ticks[[Position[ticks,denominators[[i]]][[1,1]]-1]]/.{1->tickbase}/.tickpositiondict,
 subposition[[fathernodeposition[[j]]]]==1,yposition[[index+2]],
 True,Denominator[subposition[[fathernodeposition[[j]]]]]/.tickpositiondict];
 xpos2=position[[index+1]]+xbase;
-ypos2=(denominators[[i]])/.tickpositiondict};
-If[(*delete ground leaf*)ypos!=ypos2&&ypos==tickbase,Line[{{xpos,ypos},
-{xpos2,ypos2}}]]
+ypos2=(denominators[[i]])/.tickpositiondict;
+If[(*delete ground leaf*)ypos!=ypos2||(ypos!=tickbase&&ypos==ypos2),
+AppendTo[branches,Line[{{xpos,ypos},{xpos2,ypos2}}]];
 ];
 ,{j,Length[fathernodeposition]}];
 ];
