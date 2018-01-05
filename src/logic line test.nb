@@ -1,0 +1,105 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.2' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      3251,         97]
+NotebookOptionsPosition[      2959,         84]
+NotebookOutlinePosition[      3298,         99]
+CellTagsIndexPosition[      3255,         96]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"den", "=", 
+   RowBox[{"Sort", "[", 
+    RowBox[{"{", 
+     RowBox[{"2", ",", "3", ",", "4", ",", "6", ",", "8", ",", "12"}], "}"}], 
+    "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"denrel", "=", 
+   RowBox[{"DeleteCases", "[", 
+    RowBox[{
+     RowBox[{"Union", "[", 
+      RowBox[{"Flatten", "[", 
+       RowBox[{
+        RowBox[{"Table", "[", 
+         RowBox[{
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{
+              RowBox[{"GCD", "[", 
+               RowBox[{
+                RowBox[{"den", "[", 
+                 RowBox[{"[", "i", "]"}], "]"}], ",", 
+                RowBox[{"den", "[", 
+                 RowBox[{"[", "j", "]"}], "]"}]}], "]"}], "\[Equal]", 
+              RowBox[{"den", "[", 
+               RowBox[{"[", "i", "]"}], "]"}]}], "&&", 
+             RowBox[{"PrimeQ", "[", 
+              RowBox[{
+               RowBox[{"den", "[", 
+                RowBox[{"[", "j", "]"}], "]"}], "/", 
+               RowBox[{"den", "[", 
+                RowBox[{"[", "i", "]"}], "]"}]}], "]"}]}], ",", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"den", "[", 
+                RowBox[{"[", "i", "]"}], "]"}], "->", 
+               RowBox[{"den", "[", 
+                RowBox[{"[", "j", "]"}], "]"}]}], ",", 
+              RowBox[{
+               RowBox[{"den", "[", 
+                RowBox[{"[", "j", "]"}], "]"}], "/", 
+               RowBox[{"den", "[", 
+                RowBox[{"[", "i", "]"}], "]"}]}]}], "}"}]}], "]"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"i", ",", 
+            RowBox[{"Length", "[", "den", "]"}]}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"j", ",", 
+            RowBox[{"i", "+", "1"}], ",", 
+            RowBox[{"Length", "[", "den", "]"}]}], "}"}]}], "]"}], ",", "1"}],
+        "]"}], "]"}], ",", "Null"}], "]"}]}], ";"}], "\n", 
+ RowBox[{"LayeredGraphPlot", "[", 
+  RowBox[{"denrel", ",", 
+   RowBox[{"VertexLabeling", "\[Rule]", "True"}], ",", 
+   RowBox[{"DirectedEdges", "\[Rule]", "True"}], ",", 
+   RowBox[{"ImageSize", "->", "Large"}]}], "]"}]}], "Input",
+ CellChangeTimes->{{3.723903812937501*^9, 3.723903840149502*^9}, {
+  3.723904582890253*^9, 3.723904585654743*^9}, {3.724159892924014*^9, 
+  3.724159893181747*^9}},ExpressionUUID->"9bdc2cc5-e5c0-4f88-9285-\
+14962b1cabc3"]
+},
+WindowSize->{808, 906},
+WindowMargins->{{235, Automatic}, {0, Automatic}},
+FrontEndVersion->"11.2 for Linux x86 (64-bit) (September 10, 2017)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 2397, 62, 216, "Input",ExpressionUUID->"9bdc2cc5-e5c0-4f88-9285-14962b1cabc3"]
+}
+]
+*)
+
