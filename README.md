@@ -1,6 +1,6 @@
 # Rhythm Division
 ## Introduction
-Rhythm division is part of my research on music rhythm. This type of graph could show the inner logic of rhythm, which lays the fundation for the research of music structural research in the future.
+Rhythm division is part of my research on music rhythm. This type of graph could show the inner logic of rhythm, which lays the fundation of music structural research in the future.
 ## Method
 Music rhythm has hierarchical structure. This structure shows the logic that human understand the rhythm of music.
 
