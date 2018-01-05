@@ -1,6 +1,6 @@
 (* ::Package:: *)
 
-rhythmTree[data_]:=Module[{duration,tpos,position,simplify,containbranch,containbranchQ,framecolor,tickcolor,groundcolor,branchcolor,branchtextcolor,mainbranchcolor,linelength,margin,textsize,ticktextsize,graphics,branches,text,xbase,Q,iQ,bQ,yposition,head,ihead,bhead,length,indexheadoflist,innerindexoflist,tickbase,tickposition,rectlength,recleft,recright,tickpositiondict,subposition,denominators,numerator,ticks,node,index,sortlist,fathernodeposition,nearestposition,xpos,xpos2,ypos,ypos2,temp,i},
+rhythmTree[data_]:=Module[{bhead,bQ,branchcolor,branches,branchtextcolor,containbranch,containbranchQ,denarr,denominators,duration,fathernodeposition,framecolor,graphics,groundcolor,head,i,ihead,index,indexheadoflist,innerindexoflist,iQ,length,linelength,mainbranchcolor,margin,nearestposition,node,numerator,olddenarr,position,Q,recleft,recright,rectlength,simplify,sortlist,subposition,temp,text,textsize,tickbase,tickcolor,tickposition,tickpositiondict,ticks,ticktextsize,tpos,truelength,xbase,xpos,xpos2,ypos,ypos2,yposition},
 (*data manipulation*)
 duration=Flatten[data];
 tpos[x_]:=Accumulate[Prepend[x,0]]/Total[x];
@@ -35,6 +35,9 @@ iQ={0};
 bQ={0};
 (*keep y position of nodes*)
 yposition=Table[0,{Length[position]}];
+(*keep denominator array for out side loop to check the boundray condition*)
+denarr=Table[1000,{Length[position]}];
+denarr[[1]]=denarr[[-1]]=1;
 While[Length[Q]!=0,
 (*take first element*)
 head=Q[[1]];
@@ -44,6 +47,7 @@ iQ=Drop[iQ,1];
 bhead=bQ[[1]];
 bQ=Drop[bQ,1];
 length=Length[head];
+truelength=Length[Flatten[head]];
 (*index head*)
 indexheadoflist=0;
 innerindexoflist=0;
@@ -86,11 +90,14 @@ node=head[[i]];
 index=indexheadoflist+ihead+innerindexoflist;
 (*track y position*)
 yposition[[index+1]]=((denominators[[i]])/.tickpositiondict);
+(*track denominator array for the loop, the old is for last loop situation*)
+olddenarr=denarr;
+denarr[[index+1]]=denominators[[i]]/rectlength;
 If[ListQ[node],
 AppendTo[Q,node];
 AppendTo[iQ,ihead+indexheadoflist+innerindexoflist];
 AppendTo[bQ,If[!containbranch,(denominators[[i]])/.tickpositiondict,bhead]];
-If[True,AppendTo[text,Style[Text[InputForm[numerator[[i]]/denominators[[i]]],{position[[index+1]]+xbase,If[!containbranch,(denominators[[i]])/.tickpositiondict,tickbase]}],White,Background->Red,textsize]]];
+AppendTo[text,Style[Text[InputForm[numerator[[i]]/denominators[[i]]],{position[[index+1]]+xbase,If[!containbranch,(denominators[[i]])/.tickpositiondict,tickbase]}],White,Background->Red,textsize]];
 indexheadoflist+=Length[Flatten[node]];,
 (*else: reach the branch of tree*)
 (*do something for the branch*)
@@ -111,8 +118,8 @@ Denominator[subposition[[sortlist[[1,1]]]]]>Denominator[subposition[[sortlist[[2
 Denominator[subposition[[sortlist[[1,1]]]]]<Denominator[subposition[[sortlist[[2,1]]]]],
 {sortlist[[1,1]]},
 True,(*if two edge connection: compare outside*)If[sortlist[[1,3]]+sortlist[[2,3]]!=1,{sortlist[[1,1]],sortlist[[2,1]]},
-Which[Denominator[position[[ihead+1]]]<Denominator[position[[ihead+1+sortlist[[2,1]]-sortlist[[1,1]]]]],{sortlist[[1,1]]},
-Denominator[position[[ihead+1]]]>Denominator[position[[ihead+1+sortlist[[2,1]]-sortlist[[1,1]]]]],{sortlist[[2,1]]},
+Which[olddenarr[[ihead+1]]<olddenarr[[ihead+truelength+1]],{sortlist[[1,1]]},
+olddenarr[[ihead+1]]>olddenarr[[ihead+truelength+1]],{sortlist[[2,1]]},
 True,{sortlist[[1,1]],sortlist[[2,1]]}]]
 ];
 ];
@@ -128,13 +135,11 @@ If[(*delete ground leaf*)ypos!=ypos2||(ypos!=tickbase&&ypos==ypos2),
 AppendTo[branches,Line[{{xpos,ypos},{xpos2,ypos2}}]];
 ];
 ,{j,Length[fathernodeposition]}];
-];
-];
-];
+]
+(*end For loop*)]
+(*end while loop*)];
 xbase++,{linelength}];
-(*(*makeup missing right corner*)
-Do[temp=missingrightbranch[[i]];AppendTo[branches,{Line[{{temp[[2]],yposition[[temp[[1]]+2]]},{temp[[3]],temp[[4]]}}]}],{i,Length[missingrightbranch]}]
-*)(*ground of tree*)
+(*ground of tree*)
 AppendTo[branches,{groundcolor,EdgeForm[Directive[groundcolor,Dashing[None]]],Rectangle[{0,0},{linelength,-.1}]}];
 Framed@Show[Graphics[Flatten[{graphics,branches,text}]],ImageSize->1200,PlotRange->{{1-margin,2+margin},{-0.07,All}}]]
 
