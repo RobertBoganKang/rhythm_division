@@ -1,12 +1,16 @@
 (* ::Package:: *)
 
-rhythmTree[data_]:=Module[{bhead,bQ,branchcolor,branches,branchtextcolor,containbranch,containbranchQ,denarr,denominators,duration,fathernodeposition,framecolor,graphics,groundcolor,head,i,ihead,index,indexheadoflist,innerindexoflist,iQ,length,linelength,mainbranchcolor,margin,nearestposition,node,numerator,olddenarr,position,Q,recleft,recright,rectlength,simplify,sortlist,subposition,temp,text,textsize,tickbase,tickcolor,tickposition,tickpositiondict,ticks,ticktextsize,tpos,truelength,xbase,xpos,xpos2,ypos,ypos2,yposition},
+rhythmTree[data_]:=Module[{bhead,bQ,branchcolor,branches,branchtextcolor,containbranch,containbranchQ,denarr,denominators,duration,fathernodeposition,framecolor,graphics,groundcolor,head,i,ihead,index,indexheadoflist,innerindexoflist,iQ,length,linelength,margin,nearestposition,node,numerator,olddenarr,position,Q,recleft,recright,rectlength,simplify,sortlist,subposition,temp,text,textsize,tickbase,tickcolor,tickposition,tickpositiondict,ticks,ticktextsize,tpos,truelength,xbase,xpos,xpos2,ypos,ypos2,yposition,errorcolor,streamQ,errorQ,errcolor},
 (*data manipulation*)
 duration=Flatten[data];
 tpos[x_]:=Accumulate[Prepend[x,0]]/Total[x];
 position=tpos[duration];
 simplify[x_]:=If[ListQ[x],Total[Flatten[x]],x];
+(*all list?*)
 containbranchQ[x_]:=And@@(ListQ/@x);
+(*single logic stream line: all divisions are prime number?*)
+streamQ[x_]:=!(And@@Table[If[!PrimeQ[x[[i]]/x[[i-1]]],False,True],{i,2,Length[x]}]);
+errcolor[x_]:=If[errorQ,errorcolor,x];
 
 (*system parameters*)
 framecolor=Gray;
@@ -14,7 +18,7 @@ tickcolor=LightGray;
 groundcolor=Darker[Brown,.2];
 branchcolor=Darker[Green,.6];
 branchtextcolor=Orange;
-mainbranchcolor=Darker[Green,.6];
+errorcolor=Darker[Red,.3];
 linelength=3;
 margin=.1;
 textsize=20;
@@ -56,27 +60,29 @@ subposition=tpos[simplify/@head];
 denominators=Denominator[subposition];
 numerator=Numerator[subposition];
 ticks=Union[denominators];
+(*check stream*)
+errorQ=streamQ[Union[Denominator[subposition]]];
 (*push graphics element: frame*)
 tickbase=bhead;
 tickposition=bhead;
 (*rectangle style*)
-AppendTo[graphics,{EdgeForm[Directive[Dashed,framecolor]],White,Thin}];
+AppendTo[graphics,{EdgeForm[Directive[Dashed,errcolor[framecolor]]],White,Thin}];
 (*build rectangle*)
 rectlength=position[[1+ihead+Length[Flatten[head]]]]-position[[1+ihead]];
 recleft=position[[1+ihead]];
 recright=rectlength+position[[ihead+1]];
 AppendTo[graphics,Rectangle[{recleft+xbase,tickbase},{recright+xbase,rectlength+tickbase}]];
 (*rectangle text*)
-AppendTo[text,Style[Text[InputForm[rectlength],{(recleft+recright)/2+xbase,tickbase+rectlength}],Background->White,ticktextsize,framecolor]];
+AppendTo[text,Style[Text[InputForm[rectlength],{(recleft+recright)/2+xbase,tickbase+rectlength}],Background->White,ticktextsize,errcolor[framecolor]]];
 (*build ticks*)
 tickpositiondict={1->rectlength+tickbase};
 containbranch=containbranchQ[head];
 (*tick style*)
-AppendTo[graphics,{Dashed,tickcolor}];
+AppendTo[graphics,{Dashed,errcolor[tickcolor]}];
 (*tick text*)
 Do[If[!containbranch,
 AppendTo[graphics,Line[{{recleft+xbase,rectlength/ticks[[i]]+tickposition},{recright+xbase,rectlength/ticks[[i]]+tickposition}}]];
-AppendTo[text,Style[Text[InputForm[1/ticks[[i]]],{recleft+xbase,tickposition+rectlength/ticks[[i]]}],ticktextsize,Background->mainbranchcolor,White,Bold]];
+AppendTo[text,Style[Text[InputForm[1/ticks[[i]]],{recleft+xbase,tickposition+rectlength/ticks[[i]]}],ticktextsize,Background->errcolor[branchcolor],White,Bold]];
 AppendTo[tickpositiondict,ticks[[i]]->rectlength/ticks[[i]]+tickposition];,
 (*else*)
 AppendTo[tickpositiondict,ticks[[i]]->tickbase];
@@ -101,12 +107,12 @@ AppendTo[text,Style[Text[InputForm[numerator[[i]]/denominators[[i]]],{position[[
 indexheadoflist+=Length[Flatten[node]];,
 (*else: reach the branch of tree*)
 (*do something for the branch*)
-If[numerator[[i]]!=0,AppendTo[text,Style[Text[InputForm[numerator[[i]]/denominators[[i]]],{position[[index+1]]+xbase,((denominators[[i]])/.tickpositiondict)}],textsize,White,Background->branchtextcolor]];];
+If[numerator[[i]]!=0,AppendTo[text,Style[Text[InputForm[numerator[[i]]/denominators[[i]]],{position[[index+1]]+xbase,((denominators[[i]])/.tickpositiondict)}],textsize,White,Background->errcolor[branchtextcolor]]];];
 innerindexoflist++;
 ];
 If[i==1,
 (*zero note line*)
-AppendTo[branches,{Thickness[.02*rectlength],mainbranchcolor,Line[{{position[[index+1]]+xbase,tickbase},{position[[index+1]]+xbase,(denominators[[i]])/.tickpositiondict}}]}];,
+AppendTo[branches,{Thickness[.02*rectlength],errcolor[branchcolor],Line[{{position[[index+1]]+xbase,tickbase},{position[[index+1]]+xbase,(denominators[[i]])/.tickpositiondict}}]}];,
 (*else*)
 sortlist=SortBy[Table[If[Denominator[subposition[[j]]]<Denominator[subposition[[i]]],{j,Denominator[subposition[[j]]],Abs[subposition[[j]]-subposition[[i]]]},{j,1,2}],{j,Length[subposition]}],Last];
 nearestposition=Flatten[Position[sortlist[[;;,-1]],sortlist[[1,-1]]]];
@@ -123,7 +129,7 @@ olddenarr[[ihead+1]]>olddenarr[[ihead+truelength+1]],{sortlist[[2,1]]},
 True,{sortlist[[1,1]],sortlist[[2,1]]}]]
 ];
 ];
-Do[AppendTo[branches,{branchcolor,Thickness[0.02*rectlength*1.1^-Denominator[position[[index+1]]]]}];
+Do[AppendTo[branches,{errcolor[branchcolor],Thickness[0.02*rectlength*1.1^-Denominator[position[[index+1]]]]}];
 xpos=subposition[[fathernodeposition[[j]]]]*rectlength+xbase+position[[ihead+1]];
 ypos=Which[subposition[[fathernodeposition[[j]]]]==0||subposition[[fathernodeposition[[j]]]]==1&&xpos-xbase==1,
 ticks[[Position[ticks,denominators[[i]]][[1,1]]-1]]/.{1->tickbase}/.tickpositiondict,
