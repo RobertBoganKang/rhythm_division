@@ -15,12 +15,12 @@ In one group of division factors: `{x[0],x[1],...,x[i]}`, we will make sure all 
 ## Deficiency
 This algorithm is currently doing mannuly. Automatic algrithm seems too difficult to search now.
 ## Demos
-### demo
-`{3, 2, 1, 4, 2, 2, 1, 1}`
+### demo (middle east rhythm)
+`{2, 3, 1, 2, 4, 2, 1, 1}`
 ![Alt Text](https://github.com/RobertBoganKang/rhythm_division/blob/master/demo/demo.png)
-### demo2
+### demo2 (substitute)
 `{3, {2, 1}, {1, 1, 1}, 3}`
 ![Alt Text](https://github.com/RobertBoganKang/rhythm_division/blob/master/demo/demo2.png)
-### division
+### division (division)
 `{{2, 1}, {2, 2}}`
 ![Alt Text](https://github.com/RobertBoganKang/rhythm_division/blob/master/demo/division.png)
