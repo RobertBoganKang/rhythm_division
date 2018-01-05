@@ -1,9 +1,6 @@
 (* ::Package:: *)
 
-duration,tpos,position,simplify,containbranchQ,framecolor,tickcolor,groundcolor,branchcolor,branchtextcolor,mainbranchcolor,linelength,margin,textsize,ticktextsize,graphics,branches,text,xbase,Q,iQ,bQ,yposition,head,ihead,bhead,length,indexheadoflist,innerindexoflist,tickbase,tickposition,rectlength,recleft,recright,tickpositiondict,subposition,denominators,numerator,ticks,node,index,sortlist,fathernodeposition,nearestposition
-
-
-rhythmTree[data_]:=Module[{},
+rhythmTree[data_]:=Module[{duration,tpos,position,simplify,containbranchQ,framecolor,tickcolor,groundcolor,branchcolor,branchtextcolor,mainbranchcolor,linelength,margin,textsize,ticktextsize,graphics,branches,text,xbase,Q,iQ,bQ,yposition,head,ihead,bhead,length,indexheadoflist,innerindexoflist,tickbase,tickposition,rectlength,recleft,recright,tickpositiondict,subposition,denominators,numerator,ticks,node,index,sortlist,fathernodeposition,nearestposition},
 (*data manipulation*)
 duration=Flatten[data];
 tpos[x_]:=Accumulate[Prepend[x,0]]/Total[x];
