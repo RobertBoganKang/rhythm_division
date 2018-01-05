@@ -1,6 +1,9 @@
 (* ::Package:: *)
 
-rhythmTree[data_]:=Module[{duration,tpos,position,simplify,containbranchQ,framecolor,tickcolor,groundcolor,branchcolor,branchtextcolor,mainbranchcolor,linelength,margin,textsize,ticktextsize,graphics,branches,text,xbase,Q,iQ,bQ,yposition,head,ihead,bhead,length,indexheadoflist,innerindexoflist,tickbase,tickposition,rectlength,recleft,recright,tickpositiondict,subposition,denominators,numerator,ticks,node,index,sortlist,fathernodeposition,nearestposition},
+duration,tpos,position,simplify,containbranchQ,framecolor,tickcolor,groundcolor,branchcolor,branchtextcolor,mainbranchcolor,linelength,margin,textsize,ticktextsize,graphics,branches,text,xbase,Q,iQ,bQ,yposition,head,ihead,bhead,length,indexheadoflist,innerindexoflist,tickbase,tickposition,rectlength,recleft,recright,tickpositiondict,subposition,denominators,numerator,ticks,node,index,sortlist,fathernodeposition,nearestposition
+
+
+rhythmTree[data_]:=Module[{},
 (*data manipulation*)
 duration=Flatten[data];
 tpos[x_]:=Accumulate[Prepend[x,0]]/Total[x];
@@ -80,8 +83,8 @@ index=indexheadoflist+ihead+innerindexoflist;
 If[ListQ[node],
 AppendTo[Q,node];
 AppendTo[iQ,ihead+indexheadoflist+innerindexoflist];
-AppendTo[bQ,If[!containbranchQ[head],rectlength/denominators[[i]],0]+bhead];
-AppendTo[text,Style[Text[InputForm[numerator[[i]]/denominators[[i]]],{position[[index+1]]+xbase,rectlength/denominators[[i]]+tickbase}],White,Background->Red,textsize]];
+AppendTo[bQ,If[!containbranchQ[head],(denominators[[i]])/.tickpositiondict,bhead]];
+AppendTo[text,Style[Text[InputForm[numerator[[i]]/denominators[[i]]],{position[[index+1]]+xbase,(denominators[[i]])/.tickpositiondict}],White,Background->Red,textsize]];
 indexheadoflist+=Length[Flatten[node]];,
 (*else: reach the branch of tree*)
 (*do something for the branch*)
@@ -122,7 +125,7 @@ True,Denominator[subposition[[fathernodeposition[[j]]]]]/.tickpositiondict]},
 xbase++,{linelength}];
 (*ground of tree*)
 AppendTo[branches,{groundcolor,EdgeForm[Directive[groundcolor,Dashing[None]]],Rectangle[{0,0},{linelength,-.1}]}];
-Framed@Show[Graphics[Flatten[{graphics,branches,text}]],ImageSize->1200,PlotRange->{{1-margin,2+margin},{-0.07,1.02}}]]
+Framed@Show[Graphics[Flatten[{graphics,branches,text}]],ImageSize->1200,PlotRange->{{1-margin,2+margin},{-0.07,All}}]]
 
 
 (*export function to export the result:
