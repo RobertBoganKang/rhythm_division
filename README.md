@@ -16,7 +16,7 @@ In one group of division factors: `{x[0],x[1],...,x[i]}`, we will make sure all 
 This algorithm is currently doing mannuly. Automatic algrithm seems too difficult to search now.
 ## Demos
 ### middle east rhythm
-`{2, 3, 1, 2, 4, 2, 1, 1}`
+`{2, 2, 2, 2, 4, 2, 1, 1}`
 ![Alt Text](https://github.com/RobertBoganKang/rhythm_division/blob/master/demo/middle-east.png)
 ### substitute
 `{3, {2, 1}, {1, 1, 1}, 3}`
