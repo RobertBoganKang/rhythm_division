@@ -161,8 +161,8 @@ AppendTo[branches,Line[{{xpos,ypos},{xpos2,ypos2}}]];
 (*end while loop*)];
 ,{xbase,0,linelength-1}];
 (*ground of tree*)
-AppendTo[branches,{groundcolor,EdgeForm[Directive[groundcolor,Dashing[None]]],Rectangle[{0,0},{linelength,-.1}]}];
-Framed@Show[Graphics[Flatten[{graphics,secondarybranches,branches,text}]],ImageSize->1200,PlotRange->{{1-margin,2+margin},{-0.07,All}}]]
+AppendTo[branches,{groundcolor,EdgeForm[Directive[groundcolor,Dashing[None]]],Rectangle[{0,0},{linelength,-margin}]}];
+Framed@Show[Graphics[Flatten[{graphics,secondarybranches,branches,text}]],ImageSize->1200,PlotRange->{{1-margin,2+margin},{-0.1,All}}]]
 
 
 (*export function to export the result:
