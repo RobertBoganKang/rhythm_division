@@ -20,10 +20,10 @@ Since this graphics looks like crops or corns, I use brown as ground, green as s
 
 When the block contains error of division stream-line, the error object will turn red as warning.
 ## Demos
-### middle-east rhythm
+### middle-eastern rhythm
 `{2, 2, 2, 2, 4, 2, 1, 1}`
 ![Alt Text](https://github.com/RobertBoganKang/rhythm_division/blob/master/demo/middle-east.png)
-### middle-east rhythm (variation)
+### middle-eastern rhythm (variation)
 `{{2, 1, 1, 1, 1, 2}, {1, 1, 1, 1, 2, 1, 1}}`
 ![Alt Text](https://github.com/RobertBoganKang/rhythm_division/blob/master/demo/middle-east2.png)
 ### substitute

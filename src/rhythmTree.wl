@@ -2,7 +2,7 @@
 
 (*data is an multi-dimensional array with free form, each object should be an integer or fraction
 This algorithm shows the logic of rhythm including the possible nearest relations*)
-rhythmTree[data_]:=Module[{bhead,bQ,branchcolor,branches,branchtextcolor,secondarybranchcolor,containbranch,containbranchQ,denarr,denominators,duration,fathernodeposition,framecolor,graphics,groundcolor,head,i,ihead,index,indexheadoflist,innerindexoflist,iQ,length,linelength,margin,nearestposition,node,numerator,olddenarr,position,Q,recleft,recright,rectlength,simplify,sortlist,subposition,temp,text,textsize,tickbase,tickcolor,tickposition,tickpositiondict,ticks,ticktextsize,tpos,truelength,xbase,xpos,xpos2,ypos,ypos2,yposition,errorcolor,streamQ,errorQ,errcolor,secondarybranches,secondaryfathernodeposition,calculatecoordinate},
+rhythmTree[data_]:=Module[{bhead,bQ,branchcolor,errorcolor2,errcolor2,branchsize,branchfactor,font,branches,branchtextcolor,secondarybranchcolor,containbranch,containbranchQ,denarr,denominators,duration,fathernodeposition,framecolor,graphics,groundcolor,head,i,ihead,index,indexheadoflist,innerindexoflist,iQ,length,linelength,margin,nearestposition,node,numerator,olddenarr,position,Q,recleft,recright,rectlength,simplify,sortlist,subposition,temp,text,textsize,tickbase,tickcolor,tickposition,tickpositiondict,ticks,ticktextsize,tpos,truelength,xbase,xpos,xpos2,ypos,ypos2,yposition,errorcolor,streamQ,errorQ,errcolor,secondarybranches,secondaryfathernodeposition,calculatecoordinate},
 (*data manipulation*)
 duration=Flatten[data];
 tpos[x_]:=Accumulate[Prepend[x,0]]/Total[x];
@@ -13,8 +13,21 @@ containbranchQ[x_]:=And@@(ListQ/@x);
 (*single logic stream line: all divisions are prime number?*)
 streamQ[x_]:=!(And@@Table[If[Denominator[x[[i]]/x[[i-1]]]!=1,False,True],{i,2,Length[x]}]);
 errcolor[x_]:=If[errorQ,errorcolor,x];
+errcolor2[x_]:=If[errorQ,errorcolor2,x];
 
 (*system parameters*)
+(*graphics*)
+graphics={};
+branches={};
+secondarybranches={};
+text={};
+linelength=3;
+margin=.15;
+textsize=22;
+ticktextsize=16;
+font="Segoe UI";
+branchsize=0.03;
+branchfactor=1.1;
 framecolor=Gray;
 tickcolor=LightGray;
 groundcolor=Darker[Brown,.2];
@@ -22,17 +35,7 @@ branchcolor=Darker[Green,.6];
 secondarybranchcolor=LightYellow;
 branchtextcolor=Orange;
 errorcolor=Darker[Red,.3];
-linelength=3;
-margin=.1;
-textsize=20;
-ticktextsize=14;
-
-(*graphics*)
-graphics={};
-branches={};
-secondarybranches={};
-text={};
-xbase=0;
+errorcolor2=Lighter[Red,.8];
 
 Do[
 (*BFS Body*)
@@ -69,24 +72,24 @@ errorQ=streamQ[Union[Denominator[subposition]]];
 (*push graphics element: frame*)
 tickbase=bhead;
 tickposition=bhead;
-(*rectangle style*)
-AppendTo[graphics,{EdgeForm[Directive[Dashed,errcolor[framecolor]]],White,Thin}];
 (*build rectangle*)
 rectlength=position[[1+ihead+Length[Flatten[head]]]]-position[[1+ihead]];
 recleft=position[[1+ihead]];
 recright=rectlength+position[[ihead+1]];
+(*rectangle style*)
+AppendTo[graphics,{EdgeForm[Directive[errcolor2[framecolor],Thin,Dashed]],White}];
 AppendTo[graphics,Rectangle[{recleft+xbase,tickbase},{recright+xbase,rectlength+tickbase}]];
 (*rectangle text*)
-AppendTo[text,Style[Text[InputForm[rectlength],{(recleft+recright)/2+xbase,tickbase+rectlength}],Background->White,ticktextsize,errcolor[framecolor]]];
+AppendTo[text,Style[Text[InputForm[rectlength],{(recleft+recright)/2+xbase,tickbase+rectlength}],FontFamily->font,Background->White,ticktextsize,errcolor[framecolor]]];
 (*build ticks*)
 tickpositiondict={1->rectlength+tickbase};
 containbranch=containbranchQ[head];
 (*tick style*)
-AppendTo[graphics,{Dashed,errcolor[tickcolor]}];
+AppendTo[graphics,{Thin,Dashed}];
 (*tick text*)
 Do[If[!containbranch,
-AppendTo[graphics,Line[{{recleft+xbase,rectlength/ticks[[i]]+tickposition},{recright+xbase,rectlength/ticks[[i]]+tickposition}}]];
-AppendTo[text,Style[Text[InputForm[1/ticks[[i]]],{recleft+xbase,tickposition+rectlength/ticks[[i]]}],ticktextsize,Background->errcolor[branchcolor],White,Bold]];
+AppendTo[graphics,{errcolor2[tickcolor],Line[{{recleft+xbase,rectlength/ticks[[i]]+tickposition},{recright+xbase,rectlength/ticks[[i]]+tickposition}}]}];
+AppendTo[text,Style[Text[1/ticks[[i]],{recleft+xbase,tickposition+rectlength/ticks[[i]]}],FontFamily->font,ticktextsize,Background->errcolor[branchcolor],White]];
 AppendTo[tickpositiondict,ticks[[i]]->rectlength/ticks[[i]]+tickposition];,
 (*else*)
 AppendTo[tickpositiondict,ticks[[i]]->tickbase];
@@ -107,16 +110,16 @@ If[ListQ[node],
 AppendTo[Q,node];
 AppendTo[iQ,ihead+indexheadoflist+innerindexoflist];
 AppendTo[bQ,If[!containbranch,(denominators[[i]])/.tickpositiondict,bhead]];
-AppendTo[text,Style[Text[InputForm[numerator[[i]]/denominators[[i]]],{position[[index+1]]+xbase,If[!containbranch,(denominators[[i]])/.tickpositiondict,tickbase]}],White,Background->Red,textsize]];
+AppendTo[text,Style[Text[InputForm[numerator[[i]]/denominators[[i]]],{position[[index+1]]+xbase,If[!containbranch,(denominators[[i]])/.tickpositiondict,tickbase]}],White,Background->Red,textsize,FontFamily->font]];
 indexheadoflist+=Length[Flatten[node]];,
 (*else: reach the branch of tree*)
 (*do something for the branch*)
-If[numerator[[i]]!=0,AppendTo[text,Style[Text[InputForm[numerator[[i]]/denominators[[i]]],{position[[index+1]]+xbase,((denominators[[i]])/.tickpositiondict)}],textsize,White,Background->errcolor[branchtextcolor]]];];
+If[numerator[[i]]!=0,AppendTo[text,Style[Text[InputForm[numerator[[i]]/denominators[[i]]],{position[[index+1]]+xbase,((denominators[[i]])/.tickpositiondict)}],textsize,White,Background->errcolor[branchtextcolor],FontFamily->font]];];
 innerindexoflist++;
 ];
 If[i==1,
 (*zero note line*)
-AppendTo[branches,{Thickness[.02*rectlength],errcolor[branchcolor],Line[{{position[[index+1]]+xbase,tickbase},{position[[index+1]]+xbase,(denominators[[i]])/.tickpositiondict}}]}];,
+AppendTo[branches,{Thickness[branchsize*Sqrt[rectlength]],errcolor[branchcolor],Line[{{position[[index+1]]+xbase,tickbase},{position[[index+1]]+xbase,(denominators[[i]])/.tickpositiondict}}]}];,
 (*else*)
 sortlist=SortBy[Table[If[Denominator[subposition[[j]]]<Denominator[subposition[[i]]],{j,Denominator[subposition[[j]]],Abs[subposition[[j]]-subposition[[i]]]},{j,1,2}],{j,Length[subposition]}],Last];
 nearestposition=Flatten[Position[sortlist[[;;,-1]],sortlist[[1,-1]]]];
@@ -142,13 +145,13 @@ True,Denominator[subposition[[fathernodeposition[[j]]]]]/.tickpositiondict];
 xpos2=position[[index+1]]+xbase;
 ypos2=(denominators[[i]])/.tickpositiondict;);
 (*create hidden branches*)
-Do[AppendTo[secondarybranches,{Thickness[0.02*rectlength*1.1^-Denominator[position[[index+1]]]],If[errorQ,Lighter[Red,.8],secondarybranchcolor]}];
+Do[AppendTo[secondarybranches,{Thickness[branchsize*Sqrt[rectlength]*branchfactor^-Denominator[position[[index+1]]]],errcolor2[secondarybranchcolor]}];
 calculatecoordinate[secondaryfathernodeposition,j];
 If[(*delete ground leaf*)ypos!=ypos2||(ypos!=tickbase&&ypos==ypos2),
 AppendTo[secondarybranches,Line[{{xpos,ypos},{xpos2,ypos2}}]];
 ];,{j,Length[secondaryfathernodeposition]}];
 (*create branches*)
-Do[AppendTo[branches,{errcolor[branchcolor],Thickness[0.02*rectlength*1.1^-Denominator[position[[index+1]]]]}];
+Do[AppendTo[branches,{errcolor[branchcolor],Thickness[branchsize*Sqrt[rectlength]*branchfactor^-Denominator[position[[index+1]]]]}];
 calculatecoordinate[fathernodeposition,j];
 If[(*delete ground leaf*)ypos!=ypos2||(ypos!=tickbase&&ypos==ypos2),
 AppendTo[branches,Line[{{xpos,ypos},{xpos2,ypos2}}]];
@@ -156,7 +159,7 @@ AppendTo[branches,Line[{{xpos,ypos},{xpos2,ypos2}}]];
 ]
 (*end For loop*)]
 (*end while loop*)];
-xbase++,{linelength}];
+,{xbase,0,linelength-1}];
 (*ground of tree*)
 AppendTo[branches,{groundcolor,EdgeForm[Directive[groundcolor,Dashing[None]]],Rectangle[{0,0},{linelength,-.1}]}];
 Framed@Show[Graphics[Flatten[{graphics,secondarybranches,branches,text}]],ImageSize->1200,PlotRange->{{1-margin,2+margin},{-0.07,All}}]]
