@@ -110,11 +110,11 @@ If[ListQ[node],
 AppendTo[Q,node];
 AppendTo[iQ,ihead+indexheadoflist+innerindexoflist];
 AppendTo[bQ,If[!containbranch,(denominators[[i]])/.tickpositiondict,bhead]];
-AppendTo[text,Style[Text[InputForm[numerator[[i]]/denominators[[i]]],{position[[index+1]]+xbase,If[!containbranch,(denominators[[i]])/.tickpositiondict,tickbase]}],White,Background->Red,textsize,FontFamily->font]];
+If[!(containbranch&&numerator[[i]]==0),AppendTo[text,Style[Text[If[!containbranch,InputForm[subposition[[i]]],ToString[Numerator[#]]<>" : "<>ToString[Denominator[#]]&@((subposition[[i]]-subposition[[i-1]])/(subposition[[i+1]]-subposition[[i]]))],{position[[index+1]]+xbase,If[!containbranch,(denominators[[i]])/.tickpositiondict,tickbase]}],White,Background->If[!containbranch,Red,groundcolor],textsize,FontFamily->font]]];
 indexheadoflist+=Length[Flatten[node]];,
 (*else: reach the branch of tree*)
 (*do something for the branch*)
-If[numerator[[i]]!=0,AppendTo[text,Style[Text[InputForm[numerator[[i]]/denominators[[i]]],{position[[index+1]]+xbase,((denominators[[i]])/.tickpositiondict)}],textsize,White,Background->errcolor[branchtextcolor],FontFamily->font]];];
+If[numerator[[i]]!=0,AppendTo[text,Style[Text[InputForm[subposition[[i]]],{position[[index+1]]+xbase,((denominators[[i]])/.tickpositiondict)}],textsize,White,Background->errcolor[branchtextcolor],FontFamily->font]];];
 innerindexoflist++;
 ];
 If[i==1,
