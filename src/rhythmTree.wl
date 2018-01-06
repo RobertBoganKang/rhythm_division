@@ -144,8 +144,8 @@ subposition[[fathernodeposition[[j]]]]==1,yposition[[index+2]],
 True,Denominator[subposition[[fathernodeposition[[j]]]]]/.tickpositiondict];
 xpos2=position[[index+1]]+xbase;
 ypos2=(denominators[[i]])/.tickpositiondict;);
-(*create hidden branches*)
-Do[AppendTo[secondarybranches,{Thickness[branchsize*Sqrt[rectlength]*branchfactor^-Denominator[position[[index+1]]]],errcolor2[secondarybranchcolor]}];
+(*create secondary branches*)
+Do[AppendTo[secondarybranches,{Thickness[branchsize*Sqrt[rectlength]/GoldenRatio*branchfactor^-Denominator[position[[index+1]]]],errcolor2[secondarybranchcolor]}];
 calculatecoordinate[secondaryfathernodeposition,j];
 If[(*delete ground leaf*)ypos!=ypos2||(ypos!=tickbase&&ypos==ypos2),
 AppendTo[secondarybranches,Line[{{xpos,ypos},{xpos2,ypos2}}]];
